@@ -119,9 +119,9 @@ RUN mkdir -p proc; \
 	echo -n docker > etc/sysconfig/tcuser; \
 	tcl-chroot sh -c '. /etc/init.d/tc-functions && setupHome'
 
-# as of squashfs-tools 4.4, TCL's unsquashfs is broken... (fails to unsquashfs *many* core tcz files)
+# as of squashfs-tools 4.5, TCL's unsquashfs is broken... (fails to unsquashfs *many* core tcz files)
 # https://github.com/plougher/squashfs-tools/releases
-ENV SQUASHFS_VERSION 4.4
+ENV SQUASHFS_VERSION 4.5
 RUN wget -O squashfs.tgz "https://github.com/plougher/squashfs-tools/archive/$SQUASHFS_VERSION.tar.gz"; \
 	tar --directory=/usr/src --extract --file=squashfs.tgz; \
 	make -C "/usr/src/squashfs-tools-$SQUASHFS_VERSION/squashfs-tools" \
@@ -178,7 +178,7 @@ ENV LINUX_GPG_KEYS \
 		647F28654894E3BD457199BE38DBBDC86092693E
 
 # updated via "update.sh"
-ENV LINUX_VERSION 5.10.45
+ENV LINUX_VERSION 5.10.61
 
 RUN wget -O /linux.tar.xz "https://cdn.kernel.org/pub/linux/kernel/v${LINUX_VERSION%%.*}.x/linux-${LINUX_VERSION}.tar.xz"; \
 	wget -O /linux.tar.asc "https://cdn.kernel.org/pub/linux/kernel/v${LINUX_VERSION%%.*}.x/linux-${LINUX_VERSION}.tar.sign"; \
@@ -333,9 +333,9 @@ RUN make -C /usr/src/linux INSTALL_HDR_PATH=/usr/local headers_install
 
 # http://download.virtualbox.org/virtualbox/
 # updated via "update.sh"
-ENV VBOX_VERSION 6.1.22
+ENV VBOX_VERSION 6.1.26
 # https://www.virtualbox.org/download/hashes/$VBOX_VERSION/SHA256SUMS
-ENV VBOX_SHA256 bffc316a7b8d5ed56d830e9f6aef02b4e5ffc28674032142e96ffbedd905f8c9 
+ENV VBOX_SHA256 22d02ec417cd7723d7269dbdaa71c48815f580c0ca7a0606c42bd623f84873d7 
 # (VBoxGuestAdditions_X.Y.Z.iso SHA256, for verification)
 
 RUN wget -O /vbox.iso "https://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso"; \
@@ -383,7 +383,7 @@ RUN cp -vr /usr/src/parallels/tools/* ./; \
 # updated via "update.sh"
 ENV XEN_VERSION 7.30.0
 
-RUN wget -qO- https://dl.google.com/go/go1.16.5.linux-amd64.tar.gz | tar zxf - -C /usr/local --strip-components=1
+RUN wget -qO- https://dl.google.com/go/go1.16.6.linux-amd64.tar.gz | tar zxf - -C /usr/local --strip-components=1
 RUN wget -O /xen.tgz "https://github.com/xenserver/xe-guest-utilities/archive/v$XEN_VERSION.tar.gz"; \
 	mkdir /usr/src/xen; \
 	tar --extract --file /xen.tgz --directory /usr/src/xen --strip-components 1; \
@@ -413,7 +413,7 @@ RUN wget -O usr/local/sbin/cgroupfs-mount "https://github.com/tianon/cgroupfs-mo
 	chmod +x usr/local/sbin/cgroupfs-mount; \
 	tcl-chroot cgroupfs-mount
 
-ENV DOCKER_VERSION 20.10.7
+ENV DOCKER_VERSION 20.10.8
 
 # Get the Docker binaries with version that matches our boot2docker version.
 RUN DOCKER_CHANNEL='stable'; \
